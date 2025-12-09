@@ -17,9 +17,6 @@ A simple yet powerful **User Registration API** built with **Spring Boot**, feat
 
 ---
 
-
----
-
 ## ⚙️ Tech Stack
 - **Spring Boot 3.x**
 - **Spring Security 6**
