@@ -4,15 +4,12 @@ import com.springbootpractice.UserRegisteration.DTO.UserRequest;
 import com.springbootpractice.UserRegisteration.model.User;
 import com.springbootpractice.UserRegisteration.service.UserService;
 import jakarta.validation.Valid;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.stereotype.Controller;
 import java.util.List;
 
-@RestController
-@RequestMapping("/users")
+@Controller
 public class UserController {
     private final UserService userService;
 
@@ -20,7 +17,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping
+    @PostMapping()
     public User create(@Valid @RequestBody UserRequest userRequest) {
         return userService.createUser(userRequest);
     }
@@ -29,4 +26,30 @@ public class UserController {
         return userService.getAllUsers();
     }
 
+    // 1. Show the login Page
+    @GetMapping("/login")
+    public String showLoginPage() {
+        return "login"; // Looks for login.html in templates
+    }
+
+    // 2. Show the Success page ( only accessible if login works )
+    @GetMapping("/success")
+    public String showSuccessPage() {
+        return "success"; // Looks for success.html
+    }
+
+    // 3. Process the Login Form
+    @PostMapping("/login")
+    public String processLogin(@RequestParam String username,
+                               @RequestParam String password,
+                               Model model) {
+        boolean isValid = userService.checkLogin(username,password);
+
+        if(isValid) {
+            return "redirect:/success"; // redirects prevents from resubmission
+        } else {
+            model.addAttribute("error","Invalid Username or Password");
+            return "login"; // return to login page with error
+        }
+    }
 }

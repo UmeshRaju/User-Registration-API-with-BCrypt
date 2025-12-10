@@ -18,7 +18,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/users/**", "/h2-console/**").permitAll() // 👈 allow public access
+                        .requestMatchers("/users/**", "/h2-console/**","/login","/success").permitAll() // 👈 allow public access
                         .anyRequest().authenticated()
                 )
                 .csrf(AbstractHttpConfigurer::disable) // 👈 required for POST without CSRF token

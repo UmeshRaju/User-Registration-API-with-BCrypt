@@ -32,4 +32,16 @@ public class UserService {
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
+
+    // New Method : validate Login
+
+    public boolean checkLogin(String username,String rawPassword) {
+        User user = userRepository.findByUsername(username);
+        // check if user exists
+        // check if the raw password matches the hashed password in db
+
+        return user != null && passwordEncoder.matches(rawPassword, user.getUserpassword());
+
+
+    }
 }
