@@ -2,6 +2,7 @@ package com.springbootpractice.UserRegisteration.service;
 
 import com.springbootpractice.UserRegisteration.DTO.UserRequest;
 import com.springbootpractice.UserRegisteration.Repository.UserRepository;
+import com.springbootpractice.UserRegisteration.Util.JwtService;
 import com.springbootpractice.UserRegisteration.model.User;
 import com.springbootpractice.UserRegisteration.config.SecurityConfig;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -34,13 +35,18 @@ public class UserService {
     }
 
     // New Method : validate Login
-
-    public boolean checkLogin(String username,String rawPassword) {
+    // Update the login check to return a Token String instead of boolean
+    public String checkLogin(String username,String rawPassword) {
         User user = userRepository.findByUsername(username);
         // check if user exists
         // check if the raw password matches the hashed password in db
 
-        return user != null && passwordEncoder.matches(rawPassword, user.getUserpassword());
+        if( user != null && passwordEncoder.matches(rawPassword, user.getUserpassword())){
+            // Generate and return the token !
+            return JwtService.generateToken(username);
+        }
+
+        return "failed";
 
 
     }

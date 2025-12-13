@@ -20,13 +20,13 @@ public class JwtService {
 
     // 2. GENERATE TOKEN
     // This is the method you will call from your Controller or Service
-    public String generateToken(String userName) {
+    public static String generateToken(String userName) {
         Map<String, Object> claims = new HashMap<>();
         return createToken(claims, userName);
     }
 
     // 3. CREATE TOKEN LOGIC
-    private String createToken(Map<String, Object> claims, String userName) {
+    private static String createToken(Map<String, Object> claims, String userName) {
         return Jwts.builder()
                 .setClaims(claims) // Add any custom data (roles, email, etc.)
                 .setSubject(userName) // The person this token is for
@@ -38,7 +38,7 @@ public class JwtService {
 
     // 4. GET KEY
     // Decodes our secret string into a cryptographic key object
-    private Key getSignKey() {
+    private static Key getSignKey() {
         byte[] keyBytes = Decoders.BASE64.decode(SECRET);
         return Keys.hmacShaKeyFor(keyBytes);
     }
